@@ -1,6 +1,5 @@
 #ifndef SPELLLIST_H
 #define SPELLLIST_H
-#include "String.h"
 
 /*
 Elana Parnis
@@ -10,11 +9,11 @@ Elana Parnis
 class SpellList
 {
 private:
-	String name;
+	String spellName;
 public:
 	SpellList();
+	SpellList(String name);
 	void Cast();
 	~SpellList();
-
 };
 #endif

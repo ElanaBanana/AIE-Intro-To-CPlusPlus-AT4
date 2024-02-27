@@ -11,7 +11,9 @@ class Player
 {
 private:
 	SpellList spellist;
-	String name;
+	String name; //the players name
+	int coins; // the amount of money the player has
+	int spellBonus; //spellcasting modifier
 public:
 	Player();
 	~Player();
