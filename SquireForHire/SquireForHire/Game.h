@@ -11,12 +11,12 @@ Elana Parnis
 class Game
 {
 private:
-	std::vector<Vendor> vendors; //vector of vendors
-	int map[5][3];
-	Player player; //the player
+	std::vector<Vendor>* vendors; //pointer to a vector containing the vendors
+	int map[5][3]; // market layout
+	Player* player; //the player
 public:
 	Game();
-	Game(Player p1);
+	//Game(Player p1); //maybe dont need this
 	void mainMenu(); //displays the main menu
 	void startGame(); //plays the game
 	void credits(); //displays game credits

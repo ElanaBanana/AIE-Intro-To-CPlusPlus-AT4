@@ -1,6 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "SpellList.h"
+
 
 /*
 Elana Parnis
@@ -10,13 +10,15 @@ Elana Parnis
 class Player
 {
 private:
-	SpellList spellist;
-	String name; //the players name
 	int coins; // the amount of money the player has
-	int spellBonus; //spellcasting modifier
+	int appraiseBonus; //bonus to item appraisal
 public:
+	ShoppingList* shoppingList; // pointer to vector of items
+	std::vector<Item>* Inventory; //pointer to vector of items
 	Player();
 	~Player();
+
+	void SetAppraise(int num);
 };
 #endif
 

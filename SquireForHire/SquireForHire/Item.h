@@ -1,6 +1,6 @@
 #ifndef ITEM_H
 #define ITEM_H
-#include "String.h"
+
 /*
 Elana Parnis
 26/02/2024
@@ -8,16 +8,14 @@ Elana Parnis
 
 class Item
 {
-private:
+protected:
 	String name;
 	String description;
-public:
+public: //abstract class, can't be instantiated on it's own
 	Item();
-	Item(String descript);
+	Item(String name, String descript);
 	~Item();
-	virtual void Use() = 0; //pure virtual 
-	//should I use????
-	//need to check if I need to put NPC items with user items
+	virtual void Use(Player& p) = 0;
 };
 #endif
 

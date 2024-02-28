@@ -131,16 +131,20 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Merchant.cpp" />
+    <ClCompile Include="Spyglass.cpp" />
+    <ClCompile Include="StoreItem.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="SpellList.cpp" />
+    <ClCompile Include="ShoppingList.cpp" />
     <ClCompile Include="Vendor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Merchant.h" />
+    <ClInclude Include="Spyglass.h" />
+    <ClInclude Include="StoreItem.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="SpellList.h" />
+    <ClInclude Include="ShoppingList.h" />
     <ClInclude Include="Vendor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
