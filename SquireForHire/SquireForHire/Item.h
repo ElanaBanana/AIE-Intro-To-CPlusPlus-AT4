@@ -14,9 +14,9 @@ protected:
 	String* name; //item name
 	String* description; //item description, displayed when item is viewed/ interacted with
 public: //abstract class, can't be instantiated on it's own
-	//Item();
-	//Item(String* name, String* descript);
-	//~Item();
+	Item();
+	Item(String* name, String* descript);
+	virtual ~Item();
 	const String* GetName();
 	virtual void Use(Player* p) = 0;
 };

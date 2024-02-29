@@ -19,6 +19,7 @@ public:
 	StoreItem(String* n, String* des, int price); // create a new store item
 	void ModifyPrice(int val); //modify the price of an item (higher or lower)
 	void Use(Player* p) override;
+	~StoreItem();
 };
 #endif
 

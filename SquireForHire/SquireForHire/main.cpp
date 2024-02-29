@@ -36,7 +36,6 @@ Elana Parnis
 		ShoppingListTest();
 	}
 	
-
 	//end game
 }
 
@@ -47,30 +46,20 @@ void ShoppingListTest() {
 		Item* newItem = new Spyglass();
 		list.push_back(newItem);
 	}
-	//ShoppingList shopList(list);
+	ShoppingList shopList(list);
 
 	PrintShoppingList(list);
-	//// 
-	////Item* addedItem = new Spyglass(3);
+	
+	Item* addedItem = new Spyglass(3);
 
-	////shopList.ItemObtained(addedItem, true);
-	////shopList.ItemObtained(addedItem, true);
+	addedItem->GetName()->CStr();
 
-	////PrintShoppingList(list);
+	shopList.ItemObtained(addedItem, true);
+	//shopList.ItemObtained(addedItem, true);
 
-	//delete addedItem;
-	//while (!list.empty())
-	//{
-	//	delete list.back();
-	//	list.pop_back();
-	//}
+	//PrintShoppingList(list);
 
-	//for (auto item : list)
-	//{
-	//	delete item;
-	//}
-
-	list.clear();
+	delete addedItem;
 }
 
 void PrintShoppingList(ShoppingList list) {

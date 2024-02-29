@@ -29,3 +29,9 @@ void StoreItem::Use(Player* p)
 {
 	//do nothing
 }
+
+StoreItem::~StoreItem()
+{
+	delete name;
+	delete description;
+}
