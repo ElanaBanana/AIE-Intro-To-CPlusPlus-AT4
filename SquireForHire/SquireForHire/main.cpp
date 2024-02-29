@@ -1,12 +1,18 @@
 #include <iostream>
 using namespace std;
+#include "Player.h"
+#include "ShoppingList.h"
+#include "Spyglass.h";
+#include "StoreItem.h"
+#include "String.h"
+
+void ShoppingListTest();
+void PrintShoppingList(ShoppingList list);
 
 /*
 Elana Parnis
 23/02/2024
-*/
-
-int main() {
+*/int main() {
 	//run game
 	//https://patorjk.com/software/taag/#p=display&f=Ogre&t=Squire%20for%20Hire Orge Font
 	cout << R"(
@@ -22,7 +28,66 @@ int main() {
 				 +========+		
   				 [  PLAY  ]     
 				 +========+	
-			)";
-                                                     
+)";
+
+	//SHOPPPING LIST TEST
+	while (true)
+	{
+		ShoppingListTest();
+	}
+	
+
 	//end game
+}
+
+void ShoppingListTest() {
+	
+	vector<Item*> list;
+	for (int i = 0; i < 3; i++) {
+		Item* newItem = new Spyglass();
+		list.push_back(newItem);
+	}
+	//ShoppingList shopList(list);
+
+	PrintShoppingList(list);
+	//// 
+	////Item* addedItem = new Spyglass(3);
+
+	////shopList.ItemObtained(addedItem, true);
+	////shopList.ItemObtained(addedItem, true);
+
+	////PrintShoppingList(list);
+
+	//delete addedItem;
+	//while (!list.empty())
+	//{
+	//	delete list.back();
+	//	list.pop_back();
+	//}
+
+	//for (auto item : list)
+	//{
+	//	delete item;
+	//}
+
+	list.clear();
+}
+
+void PrintShoppingList(ShoppingList list) {
+	//gets the shopping list
+
+	int len = list.GetListItems().size();
+	for (int i = 0; i < len; i++) 
+	{
+
+		std::cout << "Item " << i << ": " << list.GetListItems()[i]->GetName()->CStr();
+		if (list.GetCheckList()[i] == true)
+		{
+			cout << "   " << "Y" << endl;
+		}
+		else
+		{
+			cout << "   " << "N" << endl;
+		}
+	}
 }

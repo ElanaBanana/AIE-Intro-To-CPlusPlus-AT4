@@ -5,13 +5,20 @@
 Elana Parnis
 28/02/2024
 */
+
+#include "Item.h"
+class Player;
+class String;
+
 class Spyglass: public Item
 {
 private:
-	int uses; //how many uses are left for the current item
+	int usesLeft; //how many uses are left for the current item
 public:
-	Spyglass(String n, String d, int uses);
-	void Use(Player& p);
+	//Spyglass(String* n, String* d, int uses);
+	Spyglass();
+	Spyglass(int uses);
+	void Use(Player* p) override;
+	~Spyglass();
 };
 #endif
-

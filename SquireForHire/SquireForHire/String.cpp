@@ -285,8 +285,8 @@ void String::ReadFromConsole() {
 	inputArrayPtr = nullptr;
 }
 
-void String::WriteToConsole() {
-		cout << theStringArray << endl;
+void String::WriteToConsole(){
+		cout << theStringArray;
 }
 
 bool String::operator ==(const String& other) { //overriding the equality operator
