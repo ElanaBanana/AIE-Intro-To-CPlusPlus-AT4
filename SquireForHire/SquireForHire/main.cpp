@@ -6,8 +6,8 @@ using namespace std;
 #include "StoreItem.h"
 #include "String.h"
 
+//TESTS
 void ShoppingListTest();
-void PrintShoppingList(ShoppingList list);
 
 /*
 Elana Parnis
@@ -26,15 +26,13 @@ Elana Parnis
 
 	cout << R"(
 				 +========+		
-  				 [  PLAY  ]     
+  				 [  PLAY :3 ]     
 				 +========+	
 )";
 
 	//SHOPPPING LIST TEST
-	while (true)
-	{
-		ShoppingListTest();
-	}
+	ShoppingListTest();
+
 	
 	//end game
 }
@@ -48,35 +46,17 @@ void ShoppingListTest() {
 	}
 	ShoppingList shopList(list);
 
-	PrintShoppingList(list);
+	shopList.PrintAll();
 	
 	Item* addedItem = new Spyglass(3);
 
 	addedItem->GetName()->CStr();
-
+	//std::cout << addedItem << std::endl;
 	shopList.ItemObtained(addedItem, true);
-	//shopList.ItemObtained(addedItem, true);
+	shopList.ItemObtained(addedItem, true);
 
-	//PrintShoppingList(list);
+	delete addedItem; //delete the addedItem
 
-	delete addedItem;
-}
+	shopList.PrintAll();
 
-void PrintShoppingList(ShoppingList list) {
-	//gets the shopping list
-
-	int len = list.GetListItems().size();
-	for (int i = 0; i < len; i++) 
-	{
-
-		std::cout << "Item " << i << ": " << list.GetListItems()[i]->GetName()->CStr();
-		if (list.GetCheckList()[i] == true)
-		{
-			cout << "   " << "Y" << endl;
-		}
-		else
-		{
-			cout << "   " << "N" << endl;
-		}
-	}
 }

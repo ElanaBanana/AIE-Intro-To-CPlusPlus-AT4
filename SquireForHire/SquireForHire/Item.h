@@ -11,14 +11,16 @@ class String;
 class Item
 {
 protected:
-	String* name; //item name
-	String* description; //item description, displayed when item is viewed/ interacted with
+	String* name; //item name as a String pointer
+	String* description; //item description as a String pointer, displayed when item is viewed/ interacted with
 public: //abstract class, can't be instantiated on it's own
 	Item();
 	Item(String* name, String* descript);
 	virtual ~Item();
-	const String* GetName();
+	const String* GetName() const; //returns the name as a const String
+	const String* GetDescription() const; //returns the description as a const String*
 	virtual void Use(Player* p) = 0;
+	bool operator == (const Item& other) const; //returns true if lhs == rhs
 };
 #endif
 

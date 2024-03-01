@@ -14,20 +14,29 @@ ShoppingList::ShoppingList(std::vector<Item*> items)
 	
 	//for every item provided, create a new instace in listItems
 	//and a corresponding bool value in the obtained list
-	listItems = std::vector<Item*>();
-	obtained = std::vector<bool>();
 
 	for (int i = 0; i < len; i++) 
 	{
 		listItems.push_back(items[i]);
 		obtained.push_back(false);
 	}
+
+	//for (Item* i : items)
+	//{
+	//	listItems.push_back(i);
+	//	obtained.push_back(false);
+	//}
 	
 }
 
-const std::vector<Item*> ShoppingList::GetListItems()
+const std::vector<Item*> ShoppingList::GetList()
 {
 	return listItems;
+}
+
+const Item* ShoppingList::GetListItem(int index)
+{
+	return listItems[index];
 }
 
 const std::vector<bool> ShoppingList::GetCheckList()
@@ -35,22 +44,47 @@ const std::vector<bool> ShoppingList::GetCheckList()
 	return obtained;
 }
 
-void ShoppingList::ItemObtained(Item* item, bool obtained)
-{
-	int len = listItems.size(); //size of shopping list
+void ShoppingList::ItemObtained(Item* item, bool check)
+{//check can be true OR false
 
+	//std::cout << item << std::endl;
+	//std::cout << item->GetName()->CStr() << std::endl;
+
+	int len = listItems.size(); //size of shopping list
+	//const char* name2 = item->GetName()->CStr();
 	for (int i = 0; i < len; i++)
 	{
 		//check shopping list for item
-		//if item exists and hasn't already been marked off, update obtained table to true
-		if ((strcmp(listItems[i]->GetName()->CStr(), item->GetName()->CStr()) == 0) && this->obtained[i] != true) {
-			this->obtained[i] = obtained;
+		//if item exists and it hasn't been checked, change obtained status
+		if ((*listItems[i] == *item) && this->obtained[i] != check) {
+			this->obtained[i] = check;
 			return;
 		}
+		
 	}
-	std::cout << "Item is not on shopping list" << std::endl;
+	//std::cout << "Item is not on shopping list" << std::endl;
 	return;
 
+}
+
+void ShoppingList::PrintAll()
+{
+	int count = 0;
+	for (Item* i : listItems)
+	{//for every item in shoppinglist, print out name and if it has been obtained
+		std::cout << "Item " << count << ": ";
+		i->GetName()->WriteToConsole();
+		//if obtained print Y
+		if (obtained[count] == true)
+		{
+			std::cout << "   " << "Y" << std::endl;
+		}
+		else
+		{
+			std::cout << "   " << "N" << std::endl;
+		}
+		count++;
+	}
 }
 
 ShoppingList::~ShoppingList()

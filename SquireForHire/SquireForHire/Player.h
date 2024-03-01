@@ -13,16 +13,19 @@ class Item;
 
 class Player
 {
+public:
+	Player(ShoppingList list, int val); //takes in the shopping list and how much money the player has to start 
+	~Player();
+public:
+	ShoppingList* shoppingList; // pointer to shoppinglist (vector of item pointers)
+	std::vector<Item> Inventory; //pointer to vector of items
+
+	void SetAppraise(int num); //set the appraisalBonus 
+	int GetAppraise(); //returns the appriasalBonus
+	bool SpendCoins(int val); //
 private:
 	int coins; // the amount of money the player has
 	int appraiseBonus; //bonus to item appraisal
-public:
-	std::vector<ShoppingList>* shoppingList; // pointer to vector of items
-	std::vector<Item>* Inventory; //pointer to vector of items
-	Player();
-	~Player();
-
-	void SetAppraise(int num);
 };
 #endif
 

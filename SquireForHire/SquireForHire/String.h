@@ -29,9 +29,9 @@ public:
 	int Find(int startIndex, const String& findString); //same as above but starts looking from specified index
 	void Replace(const String& findString, const String& replaceString); //replaces all the occurances of specified string in the current string with new string
 	void ReadFromConsole(); // get input from the console and store the result
-	void WriteToConsole(); // write the current string to the console
+	void WriteToConsole() const; // write the current string to the console
 public:
-	bool operator ==(const String& other); //returns true if lhs == rhs
+	bool operator ==(const String& other) const; //returns true if lhs == rhs
 	bool operator !=(const String& other); // returns true if lhs != rhs 
 	void operator =(const String& str); //replaces the characters in teh lhs with the characters in rhs
 	bool operator <(const String& other); //returns true if the lhs comes before rhs in the alphabet

@@ -20,9 +20,13 @@ private:
 public:
 	ShoppingList();
 	ShoppingList(std::vector<Item*> items);
-	const std::vector<Item*> GetListItems(); //returns a copy of the shopping list as a const
+	const std::vector<Item*> GetList(); //returns a copy of the shopping list as a const
+	const Item* GetListItem(int index); //returns a copy of the shopping list as a const
 	const std::vector<bool> GetCheckList(); //returns a copy of the shopping list as a const
-	void ItemObtained(Item* item, bool obtained); //updates shopping list with new obtained item 
+	void ItemObtained(Item* item, bool check); //updates shopping list with new obtained item 
+
+	void PrintAll(); //prints out the shoppinglist to console
+
 	~ShoppingList();
 };
 #endif

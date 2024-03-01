@@ -285,11 +285,11 @@ void String::ReadFromConsole() {
 	inputArrayPtr = nullptr;
 }
 
-void String::WriteToConsole(){
+void String::WriteToConsole() const {
 		cout << theStringArray;
 }
 
-bool String::operator ==(const String& other) { //overriding the equality operator
+bool String::operator ==(const String& other) const { //overriding the equality operator
 	if (EqualTo(other)) 
 	{//if the two strings are equal
 		return true;
