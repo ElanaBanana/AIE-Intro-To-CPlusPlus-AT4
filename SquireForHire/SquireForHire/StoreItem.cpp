@@ -18,10 +18,15 @@ StoreItem::StoreItem(String* n, String* des, int price){
 	this->description = des;
 }
 
+int StoreItem::GetPrice()
+{
+	return price;
+}
+
 void StoreItem::ModifyPrice(int val) {
-	price += val;
-	if (price < 0) { //if price goes below zero, set to zero
-		price = 0;
+	price += val; //modify the item price by x amount (-ive or +ive)
+	if (price < 0) { //if price goes below zero, set to one -> minimum price
+		price = 1;
 	}
 }
 

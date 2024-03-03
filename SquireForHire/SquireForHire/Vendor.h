@@ -15,14 +15,15 @@ class Vendor
 {
 private:
 	String* description; //description of the room/ shop
-	Merchant merchant; //the merchant of current vendor
-	std::vector<StoreItem*> wares; //pointer to vector of items sold by merchant
+	Merchant* merchant; //the merchant of current vendor
+	std::vector<StoreItem*> wares; //vector of item pointers of wares sold by merchant
 	//std::vector<Item> items; //vector of items sold by merchant
 public:
-	Vendor();
-	Vendor(Merchant mer, String* description, std::vector<StoreItems> items);
+	Vendor(); //default constructor
+	Vendor(Merchant* mer, String* description, std::vector<StoreItems*> items);
 	~Vendor();
-
+public:
+	void SellItem(Player* pl, StoreItem* item); //sell item to player, removes item from wares and adds to player inventory
 };
 
 #endif 

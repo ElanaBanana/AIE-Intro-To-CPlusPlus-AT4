@@ -18,14 +18,16 @@ public:
 	~Player();
 public:
 	ShoppingList* shoppingList; // pointer to shoppinglist (vector of item pointers)
-	std::vector<Item> Inventory; //pointer to vector of items
-
 	void SetAppraise(int num); //set the appraisalBonus 
 	int GetAppraise(); //returns the appriasalBonus
-	bool SpendCoins(int val); //
+	bool SpendCoins(int val); //returns true and deducts if player has enough coins to purchase item 
+	void AddInventory(Item* item); //adds an item to player inventory
+	bool RemoveInventory(Item* item); //removes an item from player inventory, if item not found, returns false
+	void PrintInventroy(); //prints the player inventory to console
 private:
 	int coins; // the amount of money the player has
 	int appraiseBonus; //bonus to item appraisal
+	std::vector<Item*> inventory; //vector of pointers to items
 };
 #endif
 

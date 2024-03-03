@@ -14,7 +14,7 @@ class Item;
 
 class ShoppingList
 {
-private:
+private: //in future can do this with vector pair
 	std::vector<Item*> listItems; // a pointer to a vector of item pointers
 	std::vector<bool> obtained; //true or false if the item has been obtained
 public:

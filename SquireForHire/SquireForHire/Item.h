@@ -14,7 +14,7 @@ protected:
 	String* name; //item name as a String pointer
 	String* description; //item description as a String pointer, displayed when item is viewed/ interacted with
 public: //abstract class, can't be instantiated on it's own
-	Item();
+	Item(); //default constructor
 	Item(String* name, String* descript);
 	virtual ~Item();
 	const String* GetName() const; //returns the name as a const String

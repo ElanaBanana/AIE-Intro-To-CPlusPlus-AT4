@@ -14,7 +14,7 @@ Spyglass::Spyglass()
 {
 	this->name = new String("Spyglass");
 	this->description = new String("A shiny magnifying glass, great to help with appraising items!");
-	this->usesLeft = 3;
+	this->usesLeft = 2;
 }
 
 Spyglass::Spyglass(int uses)
@@ -32,16 +32,15 @@ Spyglass::~Spyglass()
 
 void Spyglass::Use(Player* p)
 {
-	if (usesLeft <= 0)
-	{
-		std::cout << "The item is broken and can no longer be used" << std::endl;
-		return;
-	}
 	p->SetAppraise(7);
 	usesLeft--; //Once the item is used, decrease it's use timer by 1
+	std::cout << "There are " << usesLeft << " uses left." << std::endl;
 	if (usesLeft <= 0)
 	{
+		std::cout << "The lens of the spyglass falls to the floor and shatters." << std::endl;
+		//if there are no uses left for the item, delete the item
 		usesLeft = 0;
+		p->RemoveInventory(this);
 	}
 
 }

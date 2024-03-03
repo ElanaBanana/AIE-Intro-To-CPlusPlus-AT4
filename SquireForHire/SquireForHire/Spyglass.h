@@ -16,9 +16,9 @@ private:
 	int usesLeft; //how many uses are left for the current item
 public:
 	//Spyglass(String* n, String* d, int uses);
-	Spyglass();
+	Spyglass(); //default constructor
 	Spyglass(int uses);
 	void Use(Player* p) override;
-	~Spyglass();
+	~Spyglass() override;
 };
 #endif

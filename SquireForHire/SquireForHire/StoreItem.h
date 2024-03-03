@@ -17,9 +17,11 @@ private:
 public:
 	StoreItem(); //default constructor
 	StoreItem(String* n, String* des, int price); // create a new store item
-	void ModifyPrice(int val); //modify the price of an item (higher or lower)
-	void Use(Player* p) override;
 	~StoreItem();
+public:
+	int GetPrice(); //returns the price of an item
+	void ModifyPrice(int val); //modify the price of an item (higher or lower)
+	void Use(Player* p) override; //for StoreItem this returns the description (maybe)
 };
 #endif
 
