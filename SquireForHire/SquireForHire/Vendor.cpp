@@ -11,7 +11,7 @@ Vendor::Vendor()
 	merchant = nullptr;
 }
 
-Vendor::Vendor(Merchant* mer, String* description, std::vector<StoreItems*> items)
+Vendor::Vendor(Merchant* mer, String* description, std::vector<StoreItem*> items)
 {
 	this->description = description;
 	this->merchant = mer;
@@ -44,8 +44,18 @@ void Vendor::SellItem(Player* pl, StoreItem* item)
 
 	if (pl->SpendCoins(item->GetPrice())) //returns true if coins sucessfully removed
 	{
-		//add item to player inventory
-		//remove item from store
+		int len = wares.size();
+
+		for (int i = 0; i < len; i++) 
+		{
+			if (wares[i] == item)
+			{
+				//add item to player inventory
+				pl->AddInventory(wares[i]);
+				//remove item from vendor
+				wares.erase(wares.begin() + i);
+			}
+		}
 	}
 	else {
 		std::cout << "not enough coins to purchase item" << std::endl;

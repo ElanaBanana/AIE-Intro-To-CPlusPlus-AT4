@@ -8,8 +8,10 @@
 Elana Parnis
 26/02/2024
 */
+
 class String;
-class StoreItems;
+class StoreItem;
+class Player;
 
 class Vendor
 {
@@ -20,7 +22,7 @@ private:
 	//std::vector<Item> items; //vector of items sold by merchant
 public:
 	Vendor(); //default constructor
-	Vendor(Merchant* mer, String* description, std::vector<StoreItems*> items);
+	Vendor(Merchant* mer, String* description, std::vector<StoreItem*> items);
 	~Vendor();
 public:
 	void SellItem(Player* pl, StoreItem* item); //sell item to player, removes item from wares and adds to player inventory
