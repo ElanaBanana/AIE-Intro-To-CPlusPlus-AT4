@@ -277,7 +277,7 @@ void String::ReadFromConsole() {
 	}
 	//adds num terminator
 	inputArrayPtr[length] = '\0';
-	//delete old array
+	//delete old array, only if the array is not NULL
 	delete[] theStringArray;
 	//sets our class to store new array
 	theStringArray = inputArrayPtr; 

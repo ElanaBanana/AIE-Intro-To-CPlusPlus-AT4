@@ -25,7 +25,7 @@ public:
 	const std::vector<bool> GetCheckList(); //returns a copy of the shopping list as a const
 	void ItemObtained(Item* item, bool check); //updates shopping list with new obtained item 
 
-	void PrintAll(); //prints out the shoppinglist to console
+	void PrintAll(bool printStatus); //prints out the shoppinglist to console
 
 	~ShoppingList();
 };

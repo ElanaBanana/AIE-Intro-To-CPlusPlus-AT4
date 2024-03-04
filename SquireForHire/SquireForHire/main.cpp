@@ -5,6 +5,7 @@ using namespace std;
 #include "Spyglass.h";
 #include "StoreItem.h"
 #include "String.h"
+#include "Game.h"
 
 //TESTS
 void ShoppingListTest();
@@ -14,25 +15,12 @@ Elana Parnis
 23/02/2024
 */int main() {
 	//run game
-	//https://patorjk.com/software/taag/#p=display&f=Ogre&t=Squire%20for%20Hire Orge Font
-	cout << R"(
-	 __             _             __                     _          
-	/ _\ __ _ _   _(_)_ __ ___   / _| ___  _ __    /\  /(_)_ __ ___ 
-	\ \ / _` | | | | | '__/ _ \ | |_ / _ \| '__|  / /_/ / | '__/ _ \
-	_\ \ (_| | |_| | | | |  __/ |  _| (_) | |    / __  /| | | |  __/
-	\__/\__, |\__,_|_|_|  \___| |_|  \___/|_|    \/ /_/ |_|_|  \___|
-	       |_|                                                      
-)";
+	Game* SquireForHire = new Game();
 
-	cout << R"(
-		   +========+    +===========+    +========+	
-  		   [  PLAY  ]    [  CREDITS  ]    [  QUIT  ]
-		   +========+    +===========+    +========+
-
-)";
+	SquireForHire->MainMenu();
 
 	//SHOPPPING LIST TEST
-	ShoppingListTest();
+	//ShoppingListTest();
 
 	
 	//end game
@@ -45,19 +33,19 @@ void ShoppingListTest() {
 		Item* newItem = new Spyglass();
 		list.push_back(newItem);
 	}
-	ShoppingList shopList(list);
+	ShoppingList* shopList = new ShoppingList(list);
 
-	shopList.PrintAll();
+	shopList->PrintAll(true);
 	
 	Item* addedItem = new Spyglass(3);
 
 	addedItem->GetName()->CStr();
 	//std::cout << addedItem << std::endl;
-	shopList.ItemObtained(addedItem, true);
-	shopList.ItemObtained(addedItem, true);
+	shopList->ItemObtained(addedItem, true);
+	shopList->ItemObtained(addedItem, true);
 
 	delete addedItem; //delete the addedItem
 
-	shopList.PrintAll();
+	shopList->PrintAll(true);
 
 }

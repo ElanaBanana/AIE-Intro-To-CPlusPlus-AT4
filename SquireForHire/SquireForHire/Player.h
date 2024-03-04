@@ -14,7 +14,8 @@ class Item;
 class Player
 {
 public:
-	Player(ShoppingList list, int val); //takes in the shopping list and how much money the player has to start 
+	Player() = default;
+	Player(ShoppingList* list, int val); //takes in the shopping list and how much money the player has to start 
 	~Player();
 public:
 	ShoppingList* shoppingList; // pointer to shoppinglist (vector of item pointers)

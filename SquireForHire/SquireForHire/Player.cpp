@@ -9,9 +9,10 @@ Elana Parnis
 29/02/2024
 */
 
-Player::Player(ShoppingList list, int val)
+
+Player::Player(ShoppingList* list, int val)
 {
-	shoppingList = &list;
+	shoppingList = list;
 	appraiseBonus = 0;
 	coins = val;
 }
@@ -82,4 +83,9 @@ bool Player::RemoveInventory(Item* item)
 
 	//else return nullptr
 	return false;
+}
+
+void Player::PrintInventroy()
+{
+	//print out player inventory
 }

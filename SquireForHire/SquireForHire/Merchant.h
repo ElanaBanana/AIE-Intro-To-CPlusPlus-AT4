@@ -16,7 +16,7 @@ private:
 	int reasonableness; //how likely a merchant is to give you a discount
 public:
 	Merchant();
-	Merchant(String n, String des, int reason);
+	Merchant(String* n, String* des, int reason);
 	~Merchant();
 	void ChangeReason(int num); //change the users reasonableness
 	int GetReason(); //returns the reasonableness

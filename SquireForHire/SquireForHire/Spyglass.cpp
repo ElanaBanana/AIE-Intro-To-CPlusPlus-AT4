@@ -32,9 +32,10 @@ Spyglass::~Spyglass()
 
 void Spyglass::Use(Player* p)
 {
-	p->SetAppraise(7);
+	p->SetAppraise(7); //set players appraise bonus to 7
 	usesLeft--; //Once the item is used, decrease it's use timer by 1
 	std::cout << "There are " << usesLeft << " uses left." << std::endl;
+
 	if (usesLeft <= 0)
 	{
 		std::cout << "The lens of the spyglass falls to the floor and shatters." << std::endl;

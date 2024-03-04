@@ -8,10 +8,10 @@ Merchant::Merchant()
 	reasonableness = 10; //average
 }
 
-Merchant::Merchant(String n, String des, int reason)
+Merchant::Merchant(String* n, String* des, int reason)
 {
-	this->name = &n;
-	this->description = &des;
+	this->name = n;
+	this->description = des;
 	this->reasonableness = reason; 
 }
 
