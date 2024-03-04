@@ -13,9 +13,12 @@ class Game
 {
 private:
 	std::vector<Vendor*> vendors; //pointer to a vector containing the vendors
-	int map[5][3]; // market layout
 	Player* player; //the player
 	String* playerInput = new String("default"); //to store input from the player
+
+	int map[5][3]; // market layout
+	int Xpos, Ypos;
+
 public:
 	Game();
 	//Game(Player p1); //maybe dont need this

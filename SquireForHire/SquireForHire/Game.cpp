@@ -147,6 +147,9 @@ void Game::MainMenu()
 
 		WaitingForInput();
 		playerInput->ToLower();
+		//play -> destorys menu screen and loads up StartGame()
+		//quit -> quits game
+		//credits -> displays credits
 		if (*playerInput == "play" || *playerInput == "credits" || *playerInput == "quit")
 		{
 			if (*playerInput == "play")
@@ -170,10 +173,6 @@ void Game::MainMenu()
 			std::cout << "That input in invalid." << std::endl;
 		}
 	}
-	
-	//play -> destorys menu screen and loads up StartGame()
-	//quit -> quits game
-	//credits -> TBA (draw credits)
 }
 
 void Game::StartGame()
@@ -212,7 +211,7 @@ std::cout << R"(
    \===/___________________--------------------------
 )";
 
-system("pause"); //wait for player to continue game
+	system("pause"); //wait for player to continue game
 	//GAMEEEE
 	//spawns player in 1,0
 	//waits for input
