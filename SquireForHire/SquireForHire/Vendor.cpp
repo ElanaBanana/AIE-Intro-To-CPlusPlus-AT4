@@ -21,7 +21,7 @@ Vendor::Vendor(Merchant* mer, String* description, std::vector<StoreItem*> items
 	//for each item, add to vendors wares
 	for (int i = 0; i < len; i++)
 	{
-		items.push_back(items[i]);
+		wares.push_back(items[i]);
 	}
 }
 
@@ -36,6 +36,21 @@ Vendor::~Vendor()
 		wares.pop_back();
 	}
 	wares.clear();
+}
+
+const std::vector<StoreItem*> Vendor::ReturnWares()
+{
+	return wares;
+}
+
+void Vendor::DisplayWares()
+{
+	std::cout << "Items for Sale: \n" << std::endl;
+	for (StoreItem* i : wares)
+	{
+		i->GetName()->WriteToConsole();
+		std::cout << "\n" << std::endl;
+	}
 }
 
 void Vendor::SellItem(Player* pl, StoreItem* item)

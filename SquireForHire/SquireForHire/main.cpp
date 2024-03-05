@@ -1,5 +1,6 @@
 #include <iostream>
-using namespace std;
+#include <windows.h>
+
 #include "Player.h"
 #include "ShoppingList.h"
 #include "Spyglass.h";
@@ -7,14 +8,29 @@ using namespace std;
 #include "String.h"
 #include "Game.h"
 
+
 //TESTS
 void ShoppingListTest();
+bool enableVirtualTerminal();
 
 /*
 Elana Parnis
 23/02/2024
-*/int main() {
+*/
+void main() {
 	//run game
+	if (enableVirtualTerminal() == false)
+	{
+		std::cout << "Unable to enable virtual terminal sequences." << std::endl;
+		std::cout << "Program failed to run." << std::endl;
+		std::cout << "Exit program by pressing 'Enter'" << std::endl;
+
+		std::cin.clear();
+		std::cin.ignore(std::cin.rdbuf()->in_avail());
+		std::cin.get();
+
+		return;
+	}
 	Game* SquireForHire = new Game();
 
 	SquireForHire->MainMenu();
@@ -24,11 +40,33 @@ Elana Parnis
 
 	
 	//end game
+	return;
+}
+
+bool enableVirtualTerminal()
+{
+	// Set output mode to handle virtual terminal sequences
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hOut == INVALID_HANDLE_VALUE)
+	{
+		return false;
+	}
+	DWORD dwMode = 0;
+	if (!GetConsoleMode(hOut, &dwMode))
+	{
+		return false;
+	}
+	dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	if (!SetConsoleMode(hOut, dwMode))
+	{
+		return false;
+	}
+	return true;
 }
 
 void ShoppingListTest() {
 	
-	vector<Item*> list;
+	std::vector<Item*> list;
 	for (int i = 0; i < 3; i++) {
 		Item* newItem = new Spyglass();
 		list.push_back(newItem);

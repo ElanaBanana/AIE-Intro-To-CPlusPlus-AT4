@@ -67,12 +67,13 @@ void ShoppingList::ItemObtained(Item* item, bool check)
 
 }
 
+
 void ShoppingList::PrintAll(bool printStatus)
 {
 	int count = 0;
 	for (Item* i : listItems)
 	{//for every item in shoppinglist, print out name and if it has been obtained
-		std::cout << "	Item " << count+1 << ": ";
+		std::cout << "		Item " << count+1 << ": ";
 		i->GetName()->WriteToConsole();
 		//if I want to print out the obtained status of items
 		if (printStatus == true)

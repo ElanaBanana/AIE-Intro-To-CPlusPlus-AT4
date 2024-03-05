@@ -25,6 +25,8 @@ public:
 	Vendor(Merchant* mer, String* description, std::vector<StoreItem*> items);
 	~Vendor();
 public:
+	const std::vector<StoreItem*> ReturnWares();
+	void DisplayWares();
 	void SellItem(Player* pl, StoreItem* item); //sell item to player, removes item from wares and adds to player inventory
 };
 
