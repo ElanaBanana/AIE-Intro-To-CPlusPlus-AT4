@@ -24,6 +24,7 @@ private:
 	int Xpos, Ypos;
 	void CleanText(); //cleans the input buffer
 	void WaitingForInput(); //when waiting for user input
+	void DisplayDescription();
 public:
 	Game();
 	//Game(Player p1); //maybe dont need this

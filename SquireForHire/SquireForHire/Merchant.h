@@ -20,7 +20,8 @@ public:
 	~Merchant();
 	void ChangeReason(int num); //change the users reasonableness
 	int GetReason(); //returns the reasonableness
-
+	String* GetName();
+	String* GetDescription();
 };
 #endif
 

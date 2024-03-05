@@ -76,3 +76,13 @@ void Vendor::SellItem(Player* pl, StoreItem* item)
 		std::cout << "not enough coins to purchase item" << std::endl;
 	}
 }
+
+String* Vendor::GetDescription()
+{
+	return description;
+}
+
+Merchant* Vendor::GetMerchant()
+{
+	return merchant;
+}

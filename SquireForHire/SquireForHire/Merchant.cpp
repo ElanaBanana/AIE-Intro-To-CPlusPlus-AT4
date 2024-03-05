@@ -34,3 +34,14 @@ int Merchant::GetReason()
 {
 	return reasonableness;
 }
+
+String* Merchant::GetName()
+{
+	return name;
+}
+
+
+String* Merchant::GetDescription()
+{
+	return description;
+}

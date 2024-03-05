@@ -195,8 +195,6 @@ Game::Game()
 	//1,0 is the player spawn point
 	Ypos = 1;
 	Xpos = 0;
-
-
 	
 	//initialises the map with values 1-15
 	int count = 1;
@@ -217,11 +215,11 @@ Game::Game()
 	//the first 4 numbers in the sequence are were the vendors will spawn
 	// the next 3 numbers are EMPTY spaces
 	// the last number is a EMPTY location with a spyglass in a bin (-> triggers unique dialogue with all merchants)
-
 }
 
 void Game::MainMenu()
 {
+
 	//clears the console
 	system("cls");
 	std::cout << R"(
@@ -334,6 +332,8 @@ std::cout << R"(
 
 		//draw current map 
 		DrawMap();
+		//display room description
+		DisplayDescription();
 
 		std::cout << INDENT << "What shall you do? (move + n/s/e/w)" << std::endl;
 		//gets player input from user
@@ -518,6 +518,76 @@ void Game::Credits()
 			std::cout << "That input in invalid." << std::endl;
 		}
 	}
+}
+
+void Game::DisplayDescription()
+{
+	///BUGGGG
+	//currently the vendors vector is no longer storing data after it exits the constructor
+	// 
+	// 
+	//based on current map position, display description of what is at that location
+
+	//work out which space I am on -> what the space corresonds too in the possibleLocation
+	int searchVal = map[Ypos][Xpos];
+	int len = possibleLocations.size();
+
+	int size = vendors.size();
+	//indenting the description text for FLAVOUR
+	std::cout << INDENT;
+	//for each possible Location
+	for (int i = 0; i < len; i++)
+	{
+		//if match was found
+		if (possibleLocations[i] == searchVal)
+		{
+			switch (i)
+			{
+			case 0: //prints out the first vendor listed in vendors
+				vendors[0]->GetDescription()->WriteToConsole();
+				std::cout << " ";
+				vendors[0]->GetMerchant()->GetDescription()->WriteToConsole();
+				std::cout << "\n";
+				return;
+				break;
+			case 1:
+				vendors[1]->GetDescription()->WriteToConsole();
+				std::cout << " ";
+				vendors[1]->GetMerchant()->GetDescription()->WriteToConsole();
+				std::cout << "\n";
+				return;
+				break;
+			case 2:
+				vendors[2]->GetDescription()->WriteToConsole();
+				std::cout << " ";
+				vendors[2]->GetMerchant()->GetDescription()->WriteToConsole();
+				std::cout << "\n";
+				return;
+				break;
+			case 3:
+				vendors[3]->GetDescription()->WriteToConsole();
+				std::cout << " ";
+				vendors[3]->GetMerchant()->GetDescription()->WriteToConsole();
+				std::cout << "\n";
+				return;
+				break;
+			case 4: //4-6 are all the same
+			case 5:
+			case 6:
+				std::cout << "An empty stall sits before you, throughly stripped off all its goods.\n" << std::endl;
+				return;
+				break;
+			case 7:
+				//MAGIC BIN 
+				std::cout << "GO GO MAGIC BIN\n" << std::endl;
+				return;
+				break;
+			}
+		}
+	}
+
+	//if no match was found
+	std::cout << "You stand on a dusty path, surrounded by the hustle and bustle of market goers.\n" << std::endl;
 }
 
 void Game::WaitingForInput()
