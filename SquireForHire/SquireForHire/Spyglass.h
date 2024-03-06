@@ -12,13 +12,14 @@ class String;
 
 class Spyglass: public Item
 {
-private:
-	int usesLeft; //how many uses are left for the current item
 public:
 	//Spyglass(String* n, String* d, int uses);
 	Spyglass(); //default constructor
 	Spyglass(int uses);
 	void Use(Player* p) override;
 	~Spyglass() override;
+
+private:
+	int usesLeft; //how many uses are left for the current item
 };
 #endif

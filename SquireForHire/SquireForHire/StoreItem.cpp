@@ -1,3 +1,4 @@
+#include <iostream>
 #include "StoreItem.h"
 #include "String.h"
 
@@ -32,7 +33,7 @@ void StoreItem::ModifyPrice(int val) {
 
 void StoreItem::Use(Player* p)
 {
-	//do nothing
+	std::cout << "     " << description->CStr() << std::endl;
 }
 
 StoreItem::~StoreItem()

@@ -45,7 +45,7 @@ String::~String() {
 	delete[] theStringArray; //AVADAAAAAA KEDAVRAA
 }
 
-size_t String::Length() const {
+int String::Length() const {
 	return strlen(theStringArray); //returns the len of the char array as a size_t (int that just great, ehehehe)
 }
 
@@ -137,7 +137,7 @@ void String::ToLower() {
 			theStringArray[i] = char(theStringArray[i] + 32); // convert to lowercase version of char by adding 32
 		}
 	}
-	//else skip
+	//skip
 }
 
 void String::ToUpper() {
@@ -153,7 +153,7 @@ void String::ToUpper() {
 			theStringArray[i] = char(theStringArray[i] - 32); // convert to lowercase version of char by adding 32
 		}
 	}
-	//else skip
+	//skip
 }
 
 int String::Find(const String& findString) {

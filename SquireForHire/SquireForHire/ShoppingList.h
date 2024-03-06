@@ -15,13 +15,12 @@ class String;
 
 class ShoppingList
 {
-private: //in future can do this with vector pair
-	std::vector<Item*> listItems; // a pointer to a vector of item pointers
-	std::vector<bool> obtained; //true or false if the item has been obtained
-	int Partition(int s, int e);
 public:
 	ShoppingList();
 	ShoppingList(std::vector<Item*> items);
+	~ShoppingList();
+
+public:
 	const std::vector<Item*> GetList() const; //returns a copy of the shopping list as a const
 	const std::vector<bool> GetObtained() const; //returns a copy of the shopping list as a const
 	const Item* GetListItem(int index); //returns a copy of the shopping list as a const
@@ -31,6 +30,9 @@ public:
 	int SearchList(String* search) const; //searches the shopping list for given item, returns index else returns -1
 	void PrintAll(bool printStatus) const; //prints out the shoppinglist to console
 
-	~ShoppingList();
+private: //in future can do this with vector pair
+	std::vector<Item*> listItems; // a pointer to a vector of item pointers
+	std::vector<bool> obtained; //true or false if the item has been obtained
+	int Partition(int s, int e);
 };
 #endif

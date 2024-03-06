@@ -16,14 +16,14 @@ public:
 	String(const String& otherString);
 	~String();
 public:
-	size_t Length() const; // returns the size of the length using strlen()
+	int Length() const; // returns the size of the length using strlen()
 	char CharacterAt(int index); // returns the character at index specified
 	bool EqualTo(const String& other) const; // returns true if the string provided is == the stored string
 	void Append(const String& str); //adds the provided string to the end current string
 	void Prepend(const String& str); //adds the provided string to the start of the current string
 	const char* CStr() const; //get my epic string LITERALLY
-	void ToLower(); // converts all the values in the current string to lowercase
-	void ToUpper(); // converts all the values in the current string to UPPERCASE
+	void ToLower(); // converts all the values in the current string to lowercase returns as String pointer
+	void ToUpper(); // converts all the values in the current string to UPPERCASE returns as String pointer
 
 	int Find(const String& findString); //returns the location of the start of the FIRST INSTANCE of the specific string
 	int Find(int startIndex, const String& findString); //same as above but starts looking from specified index

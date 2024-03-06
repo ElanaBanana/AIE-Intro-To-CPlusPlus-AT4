@@ -17,7 +17,7 @@ bool enableVirtualTerminal();
 Elana Parnis
 23/02/2024
 */
-void main() {
+int main() {
 	//run game
 	if (enableVirtualTerminal() == false)
 	{
@@ -29,7 +29,7 @@ void main() {
 		std::cin.ignore(std::cin.rdbuf()->in_avail());
 		std::cin.get();
 
-		return;
+		return 0;
 	}
 	Game* SquireForHire = new Game();
 
@@ -40,7 +40,7 @@ void main() {
 
 	
 	//end game
-	return;
+	return 0;
 }
 
 bool enableVirtualTerminal()

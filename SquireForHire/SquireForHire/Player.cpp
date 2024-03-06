@@ -1,5 +1,7 @@
+#include <iostream>
+
 #include "Player.h"
-//#include "String.h"
+#include "String.h"
 #include "ShoppingList.h"
 #include "Spyglass.h"
 #include "StoreItem.h"
@@ -15,6 +17,7 @@ Player::Player(ShoppingList* list, int val)
 	shoppingList = list;
 	appraiseBonus = 0;
 	coins = val;
+	smelly = false;
 }
 
 Player::~Player()
@@ -27,7 +30,7 @@ Player::~Player()
 	inventory.clear();
 }
 
- const ShoppingList* Player::GetShoppingList()
+ ShoppingList* Player::GetShoppingList()
 {
 	return shoppingList;
 }
@@ -71,14 +74,13 @@ bool Player::SpendCoins(int val)
 void Player::AddInventory(Item* item)
 {
 	inventory.push_back(item); //adds item to inventory
+	
 }
 
 bool Player::RemoveInventory(Item* item)
 {
 	//check if item is in inventory, if yes, remove first instance
-	int len = inventory.size();
-
-	for (int i = 0; i < len; i++)
+	for (int i = 0; i < inventory.size(); i++)
 	{
 		//if item has been found in inventory
 		if (inventory[i] == item) {
@@ -97,6 +99,50 @@ bool Player::RemoveInventory(Item* item)
 
 void Player::PrintInventroy()
 {
-	//print out player inventory
+	int len = inventory.size();
 
+	//
+	std::cout << "\n     " << "Player Inventory: " << std::endl;
+
+	//is there are no items in the inventory
+	if (len == 0) 
+	{
+		std::cout << "     ";
+		std::cout << "Inventory is Empty\n";
+
+	}
+	else //print out each item, 1 by 1
+	{
+		for (int i = 0; i < len; i++)
+		{
+			std::cout << "     ";
+			inventory[i]->GetName()->WriteToConsole();
+			std::cout << "\n";
+		}
+	}
+	
+}
+
+Item* Player::FindItem(String* item)
+{
+	for(int i = 0; i < inventory.size(); i++)
+	{
+		//if item is in inventory, return item
+		if (*inventory[i]->GetName() == *item) {
+			return inventory[i];
+		}
+	}
+	//if not in inventory, return null
+	return nullptr;
+
+}
+
+void Player::UpdateSmell(bool stink)
+{
+	smelly = stink;
+}
+
+bool Player::Smell()
+{
+	return smelly;
 }

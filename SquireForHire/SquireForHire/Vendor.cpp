@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "String.h"
 #include "StoreItem.h"
+#include "ShoppingList.h"
 
 Vendor::Vendor()
 {
@@ -60,11 +61,17 @@ StoreItem* Vendor::FindItem(String* name)
 void Vendor::DisplayWares()
 {
 	std::cout << "Items for Sale: \n" << std::endl;
-	for (StoreItem* i : wares)
+	if (wares.size() == 0) 
 	{
-		i->GetName()->WriteToConsole();
-		std::cout << "       ";
-		std::cout <<  "\x1b[93m" << i->GetPrice() << "G" << "\x1b[0m" << "\n";
+		std::cout << "No Items Avaliable.\n";
+	}
+	else
+	{
+		for (StoreItem* i : wares)
+		{
+			i->GetName()->WriteToConsole();
+			std::cout << "       " << "\x1b[93m" << i->GetPrice() << "G" << "\x1b[0m" << "\n";
+		}
 	}
 }
 
@@ -82,6 +89,7 @@ void Vendor::SellItem(Player* pl, StoreItem* item)
 			{
 				//add item to player inventory
 				pl->AddInventory(wares[i]);
+				pl->GetShoppingList()->ItemObtained(wares[i], true);
 				//remove item from vendor
 				wares.erase(wares.begin() + i);
 				//item has been purchased, return

@@ -11,33 +11,12 @@
 #include "Spyglass.h"
 #include "Item.h"
 #include "ShoppingList.h"
+#include "Bin.h"
 
 /*
 Elana Parnis
 04/03/2024
 */
-
-//console stuff
-const char* CSI = "\x1b[";
-
-//THESE SUCK AT WHAT THEY ARE MEANT TO DO >:(
-//const char* CLEAR = "\x1b[2J";
-//const char* RESET_CURSER = "\x1b[H";
-
-const char* INDENT = "\x1b[5C";
-
-//colours
-const char* RED = "\x1b[91m";
-const char* GREEN = "\x1b[92m";
-const char* YELLOW = "\x1b[93m";
-const char* BLUE = "\x1b[94m";
-const char* MAGENTA = "\x1b[95m";
-const char* WHITE = "\x1b[97m";
-const char* RESET_COLOR = "\x1b[0m";
-
-//might need these, idk
-const int PLAYER_INPUT_X = 30;
-const int PLAYER_INPUT_Y = 11;
 
 void Game::CleanText()
 {
@@ -82,7 +61,7 @@ Game::Game()
 
 		//soldier - VENDOR 2
 	tempName = new String("Anduin");
-	tempDes = new String("a knight with shinning golden armour, a lion sits proudly upon his breatplate.");
+	tempDes = new String("a knight with shining golden armour, a lion sits proudly upon his breastplate.");
 	Merchant* soldier = new Merchant(tempName, tempDes, 10);
 
 	//vendor items
@@ -179,6 +158,8 @@ Game::Game()
 	vendors.push_back(cartographer);
 	vendors.push_back(cheese);
 
+	bin = new Bin(); //create a bin
+
 	//from each vendor, pick a random item form their wares for the shopping list
 	std::vector<Item*> list;
 	int budget = 0;
@@ -200,6 +181,10 @@ Game::Game()
 
 	//create a player (with provided shopping list)
 	player = new Player(shoppingList, budget);
+
+	//start the player with 1 basic spyglass in their inventory
+	Spyglass* startingItem = new Spyglass();
+	player->AddInventory(startingItem);
 
 	//1,0 is the player spawn point
 	Ypos = 1;
@@ -228,6 +213,9 @@ Game::Game()
 
 void Game::MainMenu()
 {
+	bool waiting = true;
+	while (waiting)
+	{
 
 	//clears the console
 	system("cls");
@@ -254,9 +242,7 @@ std::cout << RED << R"(
 
 )";
 		
-	bool waiting = true;
-	while (waiting)
-	{
+
 		std::cout << INDENT << "Input: PLAY, CREDITS or QUIT." << std::endl;
 		//waits for input of either 'play', 'credits', or 'quit'
 
@@ -286,8 +272,11 @@ std::cout << RED << R"(
 		}
 		else
 		{
-			std::cout << "That input in invalid." << std::endl;
+			std::cout << INDENT << "That input in invalid.\n" << std::endl;
 		}
+		//formatting
+		std::cout << "\n";
+		system("pause");
 	}
 }
 
@@ -326,8 +315,8 @@ std::cout << R"(
 
 )" << RESET_COLOR;
 
-    std::cout << INDENT << "The markets are about to open... Press 'Enter' to proceed.";
-    
+    std::cout << INDENT << "The markets are about to open... Press 'Enter' to proceed.\n\n";
+	std::cout << INDENT;
 	//waits for any input from the user to 
 	CleanText();
     std::cin.get();
@@ -337,21 +326,12 @@ std::cout << R"(
 	bool inGame = true;
 	while (inGame == true)
 	{
-		//clear previous console
-		system("cls");
-		
-		//player funds, temp location
-		std::cout << "\n";
-		std::cout << INDENT << "Current Funds: ";
-		std::cout << YELLOW << player->GetCoins()  << "G" << RESET_COLOR << std::endl;
-
-
 		//draw current map 
 		DrawMap();
 		//display room description
-		DisplayDescription();
+		DisplayVendorDescription();
 
-		std::cout << INDENT << "What shall you do? (move + n/s/e/w) (vendors -> talk/ browse) (search + [item]) (leave)" << std::endl;
+		std::cout << INDENT << "What shall you do? (move + n/s/e/w) (vendors -> talk/ browse) (use /search + [item]) (leave)" << std::endl;
 		//gets player input from user
 		CleanText();
 		WaitingForInput();
@@ -393,7 +373,7 @@ std::cout << R"(
 			}
 			else
 			{
-				std::cout << "Invalid Command." << std::endl;
+				std::cout << INDENT << "Invalid Command.\n" << std::endl;
 				//formatting
 				std::cout << "\n";
 				system("pause");
@@ -402,42 +382,47 @@ std::cout << R"(
 		case 'b':
 			if (playerInput->EqualTo("browse"))
 			{
-				int currentVendor = -1;
-				std::cout << "\n";
-				//check if a vendor is being viwed and for which vendor is being viewed
-				//if item was NOT found, it will return the last element of the vector
-				if (map[Ypos][Xpos] == possibleLocations[0])
-				{ //display vendors wares
-					vendors[0]->DisplayWares();
-					currentVendor = 0;
-				}
-				else if (map[Ypos][Xpos] == possibleLocations[1])
-				{
-					vendors[1]->DisplayWares();
-					currentVendor = 1;
-				}
-				else if (map[Ypos][Xpos] == possibleLocations[2])
-				{
-					vendors[2]->DisplayWares();
-					currentVendor = 2;
-				}
-				else if (map[Ypos][Xpos] == possibleLocations[3])
-				{
-					vendors[3]->DisplayWares();
-					currentVendor = 3;
-				}
-				else
-				{
-					std::cout << INDENT << "There is no vendor here." << std::endl;
-					continue;
-				}
 
 				//if browsing you can either buy an item or leave
 				//replace "buy " in the input with "", so only the search value is left
 				bool inShop = true;
 				while (inShop == true)
 				{
-					std::cout << INDENT << "What shall you do? (buy + [item]) (leave)" << std::endl;
+					//draw current map 
+					DrawMap();
+					//display room description
+					DisplayVendorDescription();
+
+					int currentVendor = -1;
+					std::cout << "\n";
+					//check if a vendor is being viwed and for which vendor is being viewed
+					//if item was NOT found, it will return the last element of the vector
+					if (map[Ypos][Xpos] == possibleLocations[0])
+					{ //display vendors wares
+						vendors[0]->DisplayWares();
+						currentVendor = 0;
+					}
+					else if (map[Ypos][Xpos] == possibleLocations[1])
+					{
+						vendors[1]->DisplayWares();
+						currentVendor = 1;
+					}
+					else if (map[Ypos][Xpos] == possibleLocations[2])
+					{
+						vendors[2]->DisplayWares();
+						currentVendor = 2;
+					}
+					else if (map[Ypos][Xpos] == possibleLocations[3])
+					{
+						vendors[3]->DisplayWares();
+						currentVendor = 3;
+					}
+					else
+					{
+						std::cout << INDENT << "There is no vendor here.\n" << std::endl;
+						break;
+					}
+					std::cout << INDENT << "What shall you do? (buy + [item]) (search + [item]) (leave)" << std::endl;
 					//gets player input from user
 					CleanText();
 					WaitingForInput();
@@ -462,15 +447,20 @@ std::cout << R"(
 						}
 						else
 						{
-							std::cout << INDENT << "Item is not for sale!." << std::endl;
-
+							std::cout << INDENT << "Item is not for sale!" << std::endl;
 						}
+					}
+					//if player wants to search for item
+					else if (playerInput->CharacterAt(0) == 's')
+					{
+						SearchItem();
 					}
 					else
 					{
-						std::cout << "That is not a command :(" << std::endl;
+						std::cout << INDENT << "That is not a command :(\n" << std::endl;
 					}
 				}
+				
 				std::cout << "\n";
 				system("pause");
 			}
@@ -485,28 +475,31 @@ std::cout << R"(
 			if (playerInput->EqualTo("talk"))
 			{
 				std::cout << "\n";
-				std::cout << INDENT << "Standing before you is ";
 				//check if a vendor is being viwed and for which vendor is being viewed
 				//if item was NOT found, it will return the last element of the vector
 				if (map[Ypos][Xpos] == possibleLocations[0])
 				{ //display vendors wares
+					std::cout << INDENT << "Standing before you is ";
 					vendors[0]->GetMerchant()->GetDescription()->WriteToConsole();
 				}
 				else if (map[Ypos][Xpos] == possibleLocations[1])
 				{
+					std::cout << INDENT << "Standing before you is ";
 					vendors[1]->GetMerchant()->GetDescription()->WriteToConsole();
 				}
 				else if (map[Ypos][Xpos] == possibleLocations[2])
 				{
+					std::cout << INDENT << "Standing before you is ";
 					vendors[2]->GetMerchant()->GetDescription()->WriteToConsole();
 				}
 				else if (map[Ypos][Xpos] == possibleLocations[3])
 				{
+					std::cout << INDENT << "Standing before you is ";
 					vendors[3]->GetMerchant()->GetDescription()->WriteToConsole();
 				}
 				else
 				{
-					std::cout << INDENT << "There is no vendor here." << std::endl;
+					std::cout << INDENT << "There is no vendor here.\n" << std::endl;
 				}
 				//formatting
 				std::cout << "\n";
@@ -514,48 +507,43 @@ std::cout << R"(
 			}
 			break;
 		case 's':
-			//checks if search is found at the start of the command
-			if (playerInput->Find("search") == 0)
-			{
-				//replace "search " in the input with "", so only the search value is left
-				playerInput->Replace("search ", "");
-
-				//get the index of item in list
-				int index = player->GetShoppingList()->SearchList(playerInput);
-				std::cout << "\n";
-				if (index == -1)
-				{
-					std::cout << INDENT << "Item was not found." << std::endl;
-				}
-				else
-				{
-					std::cout << INDENT << "Item was found!" << std::endl;
-					std::cout << INDENT;
-					player->GetShoppingList()->GetList()[index]->GetName()->WriteToConsole();
-					if (player->GetShoppingList()->GetObtained()[index])
-					{
-						std::cout << "   " << "Obtained" << std::endl;
-					}
-					else
-					{
-						std::cout << "   " << "Not Obtained" << std::endl;
-					}
-				}
-
-				//searches list for item and if found display item and if it's been obtained
-				//std::cout << "Sorted Shopping List\n";
-				//player->GetShoppingList()->PrintAll(false);
-
-				//formatting
-				std::cout << "\n";
-				system("pause");
-			}
+			SearchItem();
 			break;
 		case 'i':
-			if (playerInput->EqualTo("inventory"))
+			if (playerInput->EqualTo("inventory") || playerInput->EqualTo("i"))
 			{
 				player->PrintInventroy();
 
+				std::cout << "\n";
+				system("pause");
+			}
+		case 'u':
+			//if input is use bin and player is on the speical bin tile
+			if (playerInput->EqualTo("use bin") && map[Ypos][Xpos] == possibleLocations[7])
+			{
+				bin->Use(player);
+				std::cout << "\n";
+				system("pause");
+				continue;
+			}
+			if (playerInput->Find("use") == 0)
+			{
+				//check if item is in inventory
+				//if it is call use()
+				playerInput->Replace("use ", "");
+				//get the index of item in list
+				Item* itemToUse = player->FindItem(playerInput);
+				std::cout << "\n";
+				//if item is not null (aka if an item was found)
+				if (itemToUse != nullptr)
+				{
+					itemToUse->Use(player);
+				}
+				else
+				{
+					std::cout << INDENT << "You don't have that item!\n" << std::endl;
+
+				}
 				std::cout << "\n";
 				system("pause");
 			}
@@ -567,36 +555,29 @@ std::cout << R"(
 			}
 			break;
 		default:
-			std::cout << "That is not a command :(" << std::endl;
+			std::cout << "That is not a command :(\n" << std::endl;
+			//formatting
+			std::cout << "\n";
+			system("pause");
 			break;
 		}
-		//FOR BASIC FUNCTIONALITY
-		//move + n/s/e/w DONE
-		//browse -> displays wares DONE
-		//buy [ITEM] to buy 
-		//search [ITEM] to check if it's on shopping list and if it's been obtained DONE 
-				//sort list - quick sort DONE
-				// search list - binary sort DONE
-		//leave to leave the market
 	}
-	
-	//move + n/s/e/w to traverse the map 
-	//when on a tile that contains a vendor
-	// options include, move/ talk / browse
-	//atm talk just provides a line of dialouge to display
-	//browse displays the current wares
-	//when browse is selected 
-	//player can purchase items with buy [ITEM]
-	//this removes the item from the store
-
 }
 
 void Game::DrawMap()
 {
+	//clear previous console
+	system("cls");
+
+	//player funds, temp location
+	std::cout << "\n";
+	std::cout << INDENT << "Current Funds: ";
+	std::cout << YELLOW << player->GetCoins() << "G" << RESET_COLOR << std::endl;
+
 	std::cout << "\n";
 	std::cout << INDENT << "Market Map: \n" << std::endl;
 	std::cout << INDENT << RED << " V " << RESET_COLOR << " - Vendor" << std::endl;
-	std::cout << INDENT << " E " << RESET_COLOR << " - Empty" << std::endl;
+	std::cout << INDENT << " E " << RESET_COLOR << " - Empty Stall" << std::endl;
 	std::cout << INDENT << YELLOW << " = " << RESET_COLOR << " - Path" << std::endl;
 	std::cout << INDENT << GREEN << " P " << RESET_COLOR << " - Player\n" << std::endl;
 
@@ -649,10 +630,13 @@ void Game::DrawMap()
 
 void Game::Credits()
 {
-	//clears the console
-	system("cls");
+	bool waiting = true;
+	while (waiting)
+	{
+		//clears the console
+		system("cls");
 
-	std::cout << YELLOW << R"( 
+		std::cout << YELLOW << R"( 
                                              _______________________
    _______________________-------------------                       `\
  /:--__                                                              |
@@ -676,14 +660,11 @@ void Game::Credits()
   ||[ ]||                                            ___________________/
    \===/___________________--------------------------
 
-
 )" << RESET_COLOR;
-
-	//player input to either return to menu or quit game
-	std::cout << INDENT << "Input: BACK or QUIT." << std::endl;
-	bool waiting = true;
-	while (waiting)
-	{
+		
+		//player input to either return to menu or quit game
+		std::cout << INDENT << "Input: BACK or QUIT." << std::endl;
+		//waits for player input
 		WaitingForInput();
 		playerInput->ToLower();
 		if (*playerInput == "back" || *playerInput == "quit")
@@ -703,15 +684,13 @@ void Game::Credits()
 		{
 			std::cout << "That input in invalid." << std::endl;
 		}
+		std::cout << "\n";
+		system("pause");
 	}
 }
 
-void Game::DisplayDescription()
+void Game::DisplayVendorDescription()
 {
-	///BUGGGG
-	//currently the vendors vector is no longer storing data after it exits the constructor
-	// 
-	// 
 	//based on current map position, display description of what is at that location
 
 	//work out which space I am on -> what the space corresonds too in the possibleLocation
@@ -761,7 +740,7 @@ void Game::DisplayDescription()
 				break;
 			case 7:
 				//MAGIC BIN 
-				std::cout << "GO GO MAGIC BIN\n" << std::endl;
+				std::cout << "A lone bin sits in an otherwise empty stall. Nothing odd here.\n" << std::endl;
 				return;
 				break;
 			}
@@ -772,11 +751,56 @@ void Game::DisplayDescription()
 	std::cout << "You stand on a dusty path, surrounded by the hustle and bustle of market goers.\n" << std::endl;
 }
 
+void Game::SearchItem()
+{
+	//checks if search is found at the start of the command
+	if (playerInput->Find("search") == 0)
+	{
+		//replace "search " in the input with "", so only the search value is left
+		playerInput->Replace("search ", "");
+
+		//get the index of item in list
+		int index = player->GetShoppingList()->SearchList(playerInput);
+		std::cout << "\n";
+		if (index == -1)
+		{
+			std::cout << INDENT << "Item was not found in the shopping list." << std::endl;
+		}
+		else
+		{
+			std::cout << INDENT << "Item was found in the shopping list!" << std::endl;
+			std::cout << INDENT;
+			player->GetShoppingList()->GetList()[index]->GetName()->WriteToConsole();
+			if (player->GetShoppingList()->GetObtained()[index])
+			{
+				std::cout << "   " << "Obtained" << std::endl;
+			}
+			else
+			{
+				std::cout << "   " << "Not Obtained" << std::endl;
+			}
+		}
+
+		//searches list for item and if found display item and if it's been obtained
+		//std::cout << "Sorted Shopping List\n";
+		//player->GetShoppingList()->PrintAll(false);
+
+		//formatting
+		std::cout << "\n";
+		system("pause");
+	}
+}
+
 void Game::WaitingForInput()
 {
 	std::cout << "	> ";
 	playerInput->ReadFromConsole();
 
+}
+
+const char* Game::GetIndent() const
+{
+	return INDENT;
 }
 
 Game::~Game()

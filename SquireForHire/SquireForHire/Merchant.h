@@ -10,10 +10,6 @@ class String;
 
 class Merchant
 {
-private:
-	String* name;
-	String* description;
-	int reasonableness; //how likely a merchant is to give you a discount
 public:
 	Merchant();
 	Merchant(String* n, String* des, int reason);
@@ -22,6 +18,10 @@ public:
 	int GetReason(); //returns the reasonableness
 	String* GetName();
 	String* GetDescription();
+private:
+	String* name;
+	String* description;
+	int reasonableness; //how likely a merchant is to give you a discount
 };
 #endif
 
