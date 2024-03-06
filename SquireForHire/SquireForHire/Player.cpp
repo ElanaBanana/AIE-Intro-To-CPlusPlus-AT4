@@ -44,6 +44,11 @@ int Player::GetAppraise()
 	return appraiseBonus;
 }
 
+const int Player::GetCoins()
+{
+	return coins;
+}
+
 bool Player::SpendCoins(int val)
 {
 	//if the player does not have enough coins to purchase item
