@@ -1,8 +1,9 @@
+#include <iostream>
+
 #include "Vendor.h"
 #include "Player.h"
 #include "String.h"
 #include "StoreItem.h"
-#include <iostream>
 
 Vendor::Vendor()
 {
@@ -49,7 +50,8 @@ void Vendor::DisplayWares()
 	for (StoreItem* i : wares)
 	{
 		i->GetName()->WriteToConsole();
-		std::cout << "\n" << std::endl;
+		std::cout << "       ";
+		std::cout <<  "\x1b[93m" << i->GetPrice() << "G" << "\x1b[0m" << "\n";
 	}
 }
 

@@ -21,6 +21,7 @@ public:
 	ShoppingList* shoppingList; // pointer to shoppinglist (vector of item pointers)
 	void SetAppraise(int num); //set the appraisalBonus 
 	int GetAppraise(); //returns the appriasalBonus
+	const int GetCoins(); //returns the players current amount of coins
 	bool SpendCoins(int val); //returns true and deducts if player has enough coins to purchase item 
 	void AddInventory(Item* item); //adds an item to player inventory
 	bool RemoveInventory(Item* item); //removes an item from player inventory, if item not found, returns false

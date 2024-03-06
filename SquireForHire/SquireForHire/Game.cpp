@@ -75,7 +75,7 @@ Game::Game()
 
 	//vendor
 	//creates a vendor from the list of items
-	tempDes = new String("A shabby pop up stall with all manner of potions and trinkets, sitting between the vials is");
+	tempDes = new String("A shabby pop up stall with all manner of potions and trinkets, sitting between the vials is female wicth.");
 	Vendor* witchHut = new Vendor (witch, tempDes, wares);
 
 		//soldier - VENDOR 2
@@ -96,8 +96,8 @@ Game::Game()
 	wares.push_back(item2);
 
 	//vendor
-	tempDes = new String("A very well put together store, with racks of various weapons and armour. Arming the stall is");
-	Vendor* armoury = new Vendor(witch, tempDes, wares);
+	tempDes = new String("A very well put together store, with racks of various weapons and armour. Arming the stall is a human male.");
+	Vendor* armoury = new Vendor(soldier, tempDes, wares);
 
 		//dwarf - VENDOR 3
 	tempName = new String("Dwalin");
@@ -117,12 +117,12 @@ Game::Game()
 	wares.push_back(item2);
 
 	//vendor
-	tempDes = new String("A homey store with many amazing smells coming from various baked goods. The owner is ");
+	tempDes = new String("A homey store with many amazing smells coming from various baked goods. The owner is a dwarven man.");
 	Vendor* bakery = new Vendor(dwarf, tempDes, wares);
 
 		// elf/vampire - VENDOR 4
 	tempName = new String("Astarion");
-	tempDes = new String("a pale elf with perfectly styled white hair.");
+	tempDes = new String("a pale elf with perfectly styled white hair and fangs protruding from behind his upper lip.");
 	Merchant* vampire = new Merchant(tempName, tempDes, 10);
 	
 	//vendor items
@@ -138,12 +138,12 @@ Game::Game()
 	wares.push_back(item2);
 
 	//vendor
-	tempDes = new String("Ink and paper cover the stalls walls, with maps of all shapes and shades. The individual manning the stall looks quite out of place,  ");
+	tempDes = new String("Ink and paper cover the stalls walls, with maps of all shapes and shades. The individual manning the stall is a male elf.");
 	Vendor* cartographer = new Vendor(vampire, tempDes, wares);
 
 		// ratman! the wondering cheese seller - VENDOR 5
 	tempName = new String("Remy");
-	tempDes = new String("a rather cheeky looking rat wearing a dirty cloak.");
+	tempDes = new String("a rather cheeky looking rat pokes his head from behind his hood.");
 	Merchant* ratman = new Merchant(tempName, tempDes, 10);
 
 	//vendor items
@@ -159,11 +159,10 @@ Game::Game()
 	wares.push_back(item2);
 
 	//vendor
-	tempDes = new String("Out of no-where appears ");
+	tempDes = new String("Out of no-where appears a sus individual in a dirty cloak. ");
 	Vendor* cheese = new Vendor(ratman, tempDes, wares);
 	
 	//make a vector of all the vendors
-	std::vector<Vendor*> vendors;
 	vendors.push_back(witchHut);
 	vendors.push_back(armoury);
 	vendors.push_back(bakery);
@@ -271,6 +270,7 @@ std::cout << RED << R"(
 			else
 			{ //it was quit
 				waiting = false;
+				exit(0);
 				return;
 			}
 		}
@@ -329,6 +329,12 @@ std::cout << R"(
 	{
 		//clear previous console
 		system("cls");
+		
+		//player funds, temp location
+		std::cout << "\n";
+		std::cout << INDENT << "Current Funds: ";
+		std::cout << YELLOW << player->GetCoins()  << "G" << RESET_COLOR << std::endl;
+
 
 		//draw current map 
 		DrawMap();
@@ -378,13 +384,89 @@ std::cout << R"(
 				std::cout << "Invalid Command." << std::endl;
 			}
 			break;
+		case 'b':
+			if (playerInput->EqualTo("browse"))
+			{
+				std::cout << "\n";
+				//check if a vendor is being viwed and for which vendor is being viewed
+				//if item was NOT found, it will return the last element of the vector
+				if (map[Ypos][Xpos] == possibleLocations[0])
+				{ //display vendors wares
+					vendors[0]->DisplayWares();
+				}
+				else if (map[Ypos][Xpos] == possibleLocations[1])
+				{
+					vendors[1]->DisplayWares();
+				}
+				else if (map[Ypos][Xpos] == possibleLocations[2])
+				{
+					vendors[2]->DisplayWares();
+				}
+				else if (map[Ypos][Xpos] == possibleLocations[3])
+				{
+					vendors[3]->DisplayWares();
+				}
+				else
+				{
+					std::cout << INDENT << "There is no vendor here." << std::endl;
+				}
+				//formatting
+				std::cout << "\n";
+				system("pause");
+			}
+			//For buy, check if the buy keyword is found at the start of the input
+			//If it is for all characters after buy+" " to be the search string,  search Shopping List for item
+			else if (playerInput->EqualTo("buy"))
+			{
+				//return to main menu 
+				MainMenu();
+			}
+			break;
+		case 't':
+			if (playerInput->EqualTo("talk"))
+			{
+				std::cout << "\n";
+				//check if a vendor is being viwed and for which vendor is being viewed
+				//if item was NOT found, it will return the last element of the vector
+				if (map[Ypos][Xpos] == possibleLocations[0])
+				{ //display vendors wares
+					vendors[0]->GetMerchant()->GetDescription()->WriteToConsole();
+				}
+				else if (map[Ypos][Xpos] == possibleLocations[1])
+				{
+					vendors[1]->GetMerchant()->GetDescription()->WriteToConsole();
+				}
+				else if (map[Ypos][Xpos] == possibleLocations[2])
+				{
+					vendors[2]->GetMerchant()->GetDescription()->WriteToConsole();
+				}
+				else if (map[Ypos][Xpos] == possibleLocations[3])
+				{
+					vendors[3]->GetMerchant()->GetDescription()->WriteToConsole();
+				}
+				else
+				{
+					std::cout << INDENT << "There is no vendor here." << std::endl;
+				}
+				//formatting
+				std::cout << "\n";
+				system("pause");
+			}
+			break;
+		case 'l':
+			if (playerInput->EqualTo("leave"))
+			{
+				//return to main menu 
+				MainMenu();
+			}
+			break;
 		default:
-			std::cout << "I have not done other commands yet!" << std::endl;
+			std::cout << "That is not a command :(" << std::endl;
 			break;
 		}
 		//FOR BASIC FUNCTIONALITY
-		//move + n/s/e/w
-		//browse -> displays wares
+		//move + n/s/e/w DONE
+		//browse -> displays wares DONE
 		//buy [ITEM] to buy
 		//search [ITEM] to check if it's on shopping list and if it's been obtained
 				//sort list - quick sort
@@ -392,14 +474,12 @@ std::cout << R"(
 		//leave to leave the market
 	}
 	
-	//waits for input
-	std::cout << "entering the market, you SHALL NOT PASS (jkjk.. unless..)" << std::endl;
-	//move + n/s/e/w to traverse the map
+	//move + n/s/e/w to traverse the map 
 	//when on a tile that contains a vendor
 	// options include, move/ talk / browse
 	//atm talk just provides a line of dialouge to display
 	//browse displays the current wares
-	//when browse it selected 
+	//when browse is selected 
 	//player can purchase items with buy [ITEM]
 	//this removes the item from the store
 
@@ -545,29 +625,25 @@ void Game::DisplayDescription()
 			{
 			case 0: //prints out the first vendor listed in vendors
 				vendors[0]->GetDescription()->WriteToConsole();
-				std::cout << " ";
-				vendors[0]->GetMerchant()->GetDescription()->WriteToConsole();
+				//vendors[0]->GetMerchant()->GetDescription()->WriteToConsole();
 				std::cout << "\n";
 				return;
 				break;
 			case 1:
 				vendors[1]->GetDescription()->WriteToConsole();
-				std::cout << " ";
-				vendors[1]->GetMerchant()->GetDescription()->WriteToConsole();
+				//vendors[1]->GetMerchant()->GetDescription()->WriteToConsole();
 				std::cout << "\n";
 				return;
 				break;
 			case 2:
 				vendors[2]->GetDescription()->WriteToConsole();
-				std::cout << " ";
-				vendors[2]->GetMerchant()->GetDescription()->WriteToConsole();
+				//vendors[2]->GetMerchant()->GetDescription()->WriteToConsole();
 				std::cout << "\n";
 				return;
 				break;
 			case 3:
 				vendors[3]->GetDescription()->WriteToConsole();
-				std::cout << " ";
-				vendors[3]->GetMerchant()->GetDescription()->WriteToConsole();
+				//vendors[3]->GetMerchant()->GetDescription()->WriteToConsole();
 				std::cout << "\n";
 				return;
 				break;
