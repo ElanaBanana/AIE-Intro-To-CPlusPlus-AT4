@@ -21,17 +21,24 @@ ShoppingList::ShoppingList(std::vector<Item*> items)
 		obtained.push_back(false);
 	}
 
+	//after items have been added, sort list in alphabetical order
+	SortList(0, len-1);
+
 	//for (Item* i : items)
 	//{
 	//	listItems.push_back(i);
 	//	obtained.push_back(false);
 	//}
-	
 }
 
-const std::vector<Item*> ShoppingList::GetList()
+const std::vector<Item*> ShoppingList::GetList() const
 {
 	return listItems;
+}
+
+const std::vector<bool> ShoppingList::GetObtained() const
+{
+	return obtained;
 }
 
 const Item* ShoppingList::GetListItem(int index)
@@ -67,8 +74,85 @@ void ShoppingList::ItemObtained(Item* item, bool check)
 
 }
 
+//sorting items using quicksort
+void ShoppingList::SortList(int start, int end)
+{
+	if (start < end)
+	{
+		int pivotIndex = Partition(start, end);
 
-void ShoppingList::PrintAll(bool printStatus)
+		//smaller goes to the left, 
+		//higher goes to the right
+		SortList(start, pivotIndex - 1);
+		SortList(pivotIndex + 1, end);
+	}
+}
+
+int ShoppingList::Partition(int start, int end)
+{
+	//pick the pivot, last item
+	Item* pivot = listItems[end];
+	Item* temp;
+	//Index of smaller element/ the right position of pivot (larger than pivot)
+	int rightOfPivot = start - 1;
+
+	for (int i = start; i <= end; i++)
+	{
+		//if the current element is smaller than the pivot, swap 
+		if (String::alphabetComparison(*(listItems[i]->GetName()), *(pivot->GetName())))
+		{
+			//incremental index right
+			rightOfPivot++;
+			temp = listItems[rightOfPivot];
+			listItems[rightOfPivot] = listItems[i];
+			listItems[i] = temp;
+		}
+	}
+
+	//swap pivot with right
+	temp = listItems[rightOfPivot + 1];
+	listItems[rightOfPivot + 1] = listItems[end];
+	listItems[end] = temp;
+
+	temp = nullptr; //clean up
+
+	return (rightOfPivot + 1);
+}
+
+int ShoppingList::SearchList(String* search) const
+{
+	//start search for entire list
+	int left = 0;
+	int right = listItems.size() - 1;
+
+	//cut down with binary search
+	while (left <= right)
+	{
+		int middle = (left + right) / 2;
+
+		//if middle value == our search value
+		if (*listItems[middle]->GetName() == *search)
+		{
+			return middle;
+		}
+		//if middle comes before search value
+		if (String::alphabetComparison(*listItems[middle]->GetName(), *search)) 
+		{
+			//set left to be just after middle value
+			left = middle + 1;
+		}
+		//if middle comes after search value 
+		if (String::alphabetComparison(*search, *listItems[middle]->GetName()))
+		{
+			//set right to be just after the middle
+			right = middle - 1;
+		}
+	}
+	//if it is never found
+	return -1;
+}
+
+void ShoppingList::PrintAll(bool printStatus) const
 {
 	int count = 0;
 	for (Item* i : listItems)

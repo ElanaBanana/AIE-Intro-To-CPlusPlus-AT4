@@ -18,7 +18,7 @@ public:
 	Player(ShoppingList* list, int val); //takes in the shopping list and how much money the player has to start 
 	~Player();
 public:
-	ShoppingList* shoppingList; // pointer to shoppinglist (vector of item pointers)
+	const ShoppingList* GetShoppingList(); //returns the player shopping list
 	void SetAppraise(int num); //set the appraisalBonus 
 	int GetAppraise(); //returns the appriasalBonus
 	const int GetCoins(); //returns the players current amount of coins
@@ -30,6 +30,8 @@ private:
 	int coins; // the amount of money the player has
 	int appraiseBonus; //bonus to item appraisal
 	std::vector<Item*> inventory; //vector of pointers to items
+	ShoppingList* shoppingList; // pointer to shoppinglist (vector of item pointers)
+
 };
 #endif
 

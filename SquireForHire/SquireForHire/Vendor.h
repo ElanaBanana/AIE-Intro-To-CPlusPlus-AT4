@@ -28,6 +28,7 @@ public:
 	~Vendor();
 public:
 	const std::vector<StoreItem*> ReturnWares();
+	StoreItem* FindItem(String* name); //returns an item with given name
 	void DisplayWares();
 	void SellItem(Player* pl, StoreItem* item); //sell item to player, removes item from wares and adds to player inventory
 	String* GetDescription(); //returns the vendor description

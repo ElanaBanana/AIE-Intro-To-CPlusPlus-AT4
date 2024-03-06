@@ -27,6 +27,11 @@ Player::~Player()
 	inventory.clear();
 }
 
+ const ShoppingList* Player::GetShoppingList()
+{
+	return shoppingList;
+}
+
 void Player::SetAppraise(int num)
 {
 	if (num < 0) // cannot have negative appraiseBonus, default is 0
@@ -93,4 +98,5 @@ bool Player::RemoveInventory(Item* item)
 void Player::PrintInventroy()
 {
 	//print out player inventory
+
 }

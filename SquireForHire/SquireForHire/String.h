@@ -39,10 +39,10 @@ public:
 	char operator [](int index); //returns the character located at pos provided
 	char* operator +(const String& other); //return a pointer to the new concatantion of the two strings
 	void operator +=(const String& other);  //sets the value before += to become the concatanation of two strings
+	static bool alphabetComparison(const String& strLHS, const String& strRHS); // returns whether the LHS comes before the RHS is the alphabet
 private:
 	//I fixed it Julian :D
 	void joinStrings(const String& strLHS, const String& strRHS); //function to add two strings together
-	bool alphabetComparison(const String& strLHS, const String& strRHS); // returns whether the LHS comes before the RHS is the alphabet
 	char* theStringArray; //pointer to the char array containing the class string
 };
 

@@ -62,10 +62,12 @@ Game::Game()
 	//creates name and des for item
 	tempName = new String("Health Potion");
 	tempDes = new String("A vial with bright red liquid.");
+	tempName->ToLower(); //THIS IS SO MY BINARY SEARCH WORKS
 	//creates a new item 
 	StoreItem* item1 = new StoreItem(tempName, tempDes, 5);
 	tempName = new String("Greater Health Potion");
 	tempDes = new String("A large vial with bright red liquid.");
+	tempName->ToLower();
 	StoreItem* item2 = new StoreItem(tempName, tempDes, 10);
 
 	//saves items in list
@@ -86,9 +88,11 @@ Game::Game()
 	//vendor items
 	tempName = new String("Short Sword");
 	tempDes = new String("Ye old reliable.");
+	tempName->ToLower();
 	item1 = new StoreItem(tempName, tempDes, 8);
 	tempName = new String("Chainmail Armour");
 	tempDes = new String("Armour in pristine condition.");
+	tempName->ToLower();
 	item2 = new StoreItem(tempName, tempDes, 12);
 
 	wares.clear(); //cleans out current vector
@@ -107,8 +111,10 @@ Game::Game()
 	//vendor items
 	tempName = new String("Bread");
 	tempDes = new String("Hard as a brick");
+	tempName->ToLower();
 	item1 = new StoreItem(tempName, tempDes, 6);
 	tempName = new String("Apple Pie");
+	tempName->ToLower();
 	tempDes = new String("Just like grandma would make it.");
 	item2 = new StoreItem(tempName, tempDes, 7);
 
@@ -128,9 +134,11 @@ Game::Game()
 	//vendor items
 	tempName = new String("Map of Mars");
 	tempDes = new String("What even is that?");
+	tempName->ToLower();
 	item1 = new StoreItem(tempName, tempDes, 10);
 	tempName = new String("Map of Narnia");
 	tempDes = new String("Commonly found in ecentric gentleman's closets.");
+	tempName->ToLower();
 	item2 = new StoreItem(tempName, tempDes, 11);
 
 	wares.clear(); //cleans out current vector
@@ -138,7 +146,7 @@ Game::Game()
 	wares.push_back(item2);
 
 	//vendor
-	tempDes = new String("Ink and paper cover the stalls walls, with maps of all shapes and shades. The individual manning the stall is a male elf.");
+	tempDes = new String("Ink and paper cover the stalls walls, with maps of all shapes and shades. Manning the stall is a male elf.");
 	Vendor* cartographer = new Vendor(vampire, tempDes, wares);
 
 		// ratman! the wondering cheese seller - VENDOR 5
@@ -149,9 +157,11 @@ Game::Game()
 	//vendor items
 	tempName = new String("Swiss Cheese");
 	tempDes = new String("Holy!");
+	tempName->ToLower();
 	item1 = new StoreItem(tempName, tempDes, 6);
 	tempName = new String("Blue Cheese");
 	tempDes = new String("People like this?");
+	tempName->ToLower();
 	item2 = new StoreItem(tempName, tempDes, 7);
 
 	wares.clear(); //cleans out current vector
@@ -185,7 +195,7 @@ Game::Game()
 	}
 
 	//create a vector of items for shopping list, randomised from vendor wares (cal price off all items)
-	//crearte a shopping list
+	//crearte a shopping list, it will automatically sort itself in alphabetical order
 	ShoppingList* shoppingList = new ShoppingList(list);
 
 	//create a player (with provided shopping list)
@@ -300,7 +310,7 @@ void Game::StartGame()
 )";
 
 	std::cout << "\n";
-	player->shoppingList->PrintAll(false);
+	player->GetShoppingList()->PrintAll(false);
 
 std::cout << R"(
   |        As always your payment will be whatever remains.          |
@@ -341,9 +351,11 @@ std::cout << R"(
 		//display room description
 		DisplayDescription();
 
-		std::cout << INDENT << "What shall you do? (move + n/s/e/w)" << std::endl;
+		std::cout << INDENT << "What shall you do? (move + n/s/e/w) (vendors -> talk/ browse) (search + [item]) (leave)" << std::endl;
 		//gets player input from user
+		CleanText();
 		WaitingForInput();
+		CleanText();
 		//converts input to lowercase for checks
 		playerInput->ToLower();
 		//checks for first character to determin whether it is move/ browse/ buy/ use/ search
@@ -382,50 +394,98 @@ std::cout << R"(
 			else
 			{
 				std::cout << "Invalid Command." << std::endl;
+				//formatting
+				std::cout << "\n";
+				system("pause");
 			}
 			break;
 		case 'b':
 			if (playerInput->EqualTo("browse"))
 			{
+				int currentVendor = -1;
 				std::cout << "\n";
 				//check if a vendor is being viwed and for which vendor is being viewed
 				//if item was NOT found, it will return the last element of the vector
 				if (map[Ypos][Xpos] == possibleLocations[0])
 				{ //display vendors wares
 					vendors[0]->DisplayWares();
+					currentVendor = 0;
 				}
 				else if (map[Ypos][Xpos] == possibleLocations[1])
 				{
 					vendors[1]->DisplayWares();
+					currentVendor = 1;
 				}
 				else if (map[Ypos][Xpos] == possibleLocations[2])
 				{
 					vendors[2]->DisplayWares();
+					currentVendor = 2;
 				}
 				else if (map[Ypos][Xpos] == possibleLocations[3])
 				{
 					vendors[3]->DisplayWares();
+					currentVendor = 3;
 				}
 				else
 				{
 					std::cout << INDENT << "There is no vendor here." << std::endl;
+					continue;
 				}
-				//formatting
+
+				//if browsing you can either buy an item or leave
+				//replace "buy " in the input with "", so only the search value is left
+				bool inShop = true;
+				while (inShop == true)
+				{
+					std::cout << INDENT << "What shall you do? (buy + [item]) (leave)" << std::endl;
+					//gets player input from user
+					CleanText();
+					WaitingForInput();
+					CleanText();
+
+					//converts input to lowercase for checks
+					playerInput->ToLower();
+
+					if (playerInput->EqualTo("leave"))
+					{
+						inShop = false;
+					}
+					else if (playerInput->Find("buy") == 0)
+					{
+						playerInput->Replace("buy ", "");
+						//get the index of item in list
+						StoreItem* itemToBuy = vendors[currentVendor]->FindItem(playerInput);
+						std::cout << "\n";
+						if (itemToBuy != nullptr)
+						{
+							vendors[currentVendor]->SellItem(player, itemToBuy);
+						}
+						else
+						{
+							std::cout << INDENT << "Item is not for sale!." << std::endl;
+
+						}
+					}
+					else
+					{
+						std::cout << "That is not a command :(" << std::endl;
+					}
+				}
 				std::cout << "\n";
 				system("pause");
 			}
 			//For buy, check if the buy keyword is found at the start of the input
 			//If it is for all characters after buy+" " to be the search string,  search Shopping List for item
-			else if (playerInput->EqualTo("buy"))
+			else if (playerInput->Find("buy") == 0)
 			{
-				//return to main menu 
-				MainMenu();
+
 			}
 			break;
 		case 't':
 			if (playerInput->EqualTo("talk"))
 			{
 				std::cout << "\n";
+				std::cout << INDENT << "Standing before you is ";
 				//check if a vendor is being viwed and for which vendor is being viewed
 				//if item was NOT found, it will return the last element of the vector
 				if (map[Ypos][Xpos] == possibleLocations[0])
@@ -453,6 +513,52 @@ std::cout << R"(
 				system("pause");
 			}
 			break;
+		case 's':
+			//checks if search is found at the start of the command
+			if (playerInput->Find("search") == 0)
+			{
+				//replace "search " in the input with "", so only the search value is left
+				playerInput->Replace("search ", "");
+
+				//get the index of item in list
+				int index = player->GetShoppingList()->SearchList(playerInput);
+				std::cout << "\n";
+				if (index == -1)
+				{
+					std::cout << INDENT << "Item was not found." << std::endl;
+				}
+				else
+				{
+					std::cout << INDENT << "Item was found!" << std::endl;
+					std::cout << INDENT;
+					player->GetShoppingList()->GetList()[index]->GetName()->WriteToConsole();
+					if (player->GetShoppingList()->GetObtained()[index])
+					{
+						std::cout << "   " << "Obtained" << std::endl;
+					}
+					else
+					{
+						std::cout << "   " << "Not Obtained" << std::endl;
+					}
+				}
+
+				//searches list for item and if found display item and if it's been obtained
+				//std::cout << "Sorted Shopping List\n";
+				//player->GetShoppingList()->PrintAll(false);
+
+				//formatting
+				std::cout << "\n";
+				system("pause");
+			}
+			break;
+		case 'i':
+			if (playerInput->EqualTo("inventory"))
+			{
+				player->PrintInventroy();
+
+				std::cout << "\n";
+				system("pause");
+			}
 		case 'l':
 			if (playerInput->EqualTo("leave"))
 			{
@@ -467,10 +573,10 @@ std::cout << R"(
 		//FOR BASIC FUNCTIONALITY
 		//move + n/s/e/w DONE
 		//browse -> displays wares DONE
-		//buy [ITEM] to buy
-		//search [ITEM] to check if it's on shopping list and if it's been obtained
-				//sort list - quick sort
-				// search list - binary sort
+		//buy [ITEM] to buy 
+		//search [ITEM] to check if it's on shopping list and if it's been obtained DONE 
+				//sort list - quick sort DONE
+				// search list - binary sort DONE
 		//leave to leave the market
 	}
 	
@@ -559,7 +665,7 @@ void Game::Credits()
   |                         Elana Parnis                            |
   |                    Writer(s)                                     |
   |                         Elana Parnis                             |
-  |                         Samuel Bokland                            |
+  |                                                                  |
    |                                                                  |
    |                   Special Thanks                                 |
    |                        Julian Pahor                             |

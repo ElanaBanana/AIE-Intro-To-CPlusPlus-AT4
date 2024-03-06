@@ -44,6 +44,19 @@ const std::vector<StoreItem*> Vendor::ReturnWares()
 	return wares;
 }
 
+StoreItem* Vendor::FindItem(String* name)
+{
+	for (int i = 0; i < wares.size(); i++)
+	{
+		//if there was an item with name, return item
+		if (*wares[i]->GetName() == *name) {
+			return wares[i];
+		}
+	}
+	//if item was not found, return nullptr
+	return nullptr;
+}
+
 void Vendor::DisplayWares()
 {
 	std::cout << "Items for Sale: \n" << std::endl;
@@ -71,6 +84,8 @@ void Vendor::SellItem(Player* pl, StoreItem* item)
 				pl->AddInventory(wares[i]);
 				//remove item from vendor
 				wares.erase(wares.begin() + i);
+				//item has been purchased, return
+				return;
 			}
 		}
 	}
